@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const path = require ("path"); 
 const createError = require ("http-errors");
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
 const { AllRoutes } = require("./router/router");
 module.exports = class Application{
     #app = express()
@@ -22,6 +24,25 @@ module.exports = class Application{
         this.#app.use(express.json());
         this.#app.use(express.urlencoded({extended : true}));
         this.#app.use(express.static(path.join(__dirname,"..","public")));
+        this.#app.use("/api-doc",swaggerUI.serve,swaggerUI.setup(swaggerJsDoc({
+            swaggerDefinition: {
+                info:{
+                    title : "Bavak" ,
+                    version: "1.0.0",
+                    description : "Psychological service provider website",
+                    contact:{
+                        name:"Fateme TayebiSalar",
+                        email:"fatemehtayebi98@gmail.com"
+                    }
+                },
+                servers : [
+                    {
+                        url: "http://localhost:5000"
+                    }
+                ]
+            },
+            apis: ["./app/router/*/*.js"]
+        })))
     }
     createServer(){
         const http = require("http");

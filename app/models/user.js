@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 const Schema = new mongoose.Schema({
     email:{
         type: String,
-        required: true,
         lowercase:true
     },
     password: {
+        type: String
+    },
+    mobile: {
         type: String,
         required: true
     },
@@ -18,17 +20,12 @@ const Schema = new mongoose.Schema({
         }
     },
     firstName: {
-        type: String,
-        required: true
+        type: String
     },
     lastName: {
-        type: String,
-        required: true
+        type: String
     },
-    phoneNumber: {
-        type: String,
-        required: true
-    },
+    
     roles:{
         type:[String],
         default:["USER"]
@@ -38,26 +35,24 @@ const Schema = new mongoose.Schema({
     //    default:[]
     //},
 
-    joinedEvents:[
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Event'
-        }
-    ],
+    joinedEvents:{
+        type : [],
+        default:[]    
+            
+    }
+    ,
 
-    joinedPodcasts:[
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Podcast'
-        }
-    ],
+    joinedPodcasts:{
+        type : [],
+        default:[]    
+            
+    },
 
-    joinedVideos:[
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Video'
-        }
-    ]
+    joinedVideos:{
+        type : [],
+        default:[]    
+            
+    }
     
 });
 module.exports = {
