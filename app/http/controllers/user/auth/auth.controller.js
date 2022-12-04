@@ -2,7 +2,7 @@ const { tryWithPath } = require("@hapi/joi/lib/common");
 const createError = require("http-errors");
 const { UserModel } = require("../../../../models/user");
 const { EXPIRES_IN, USER_ROLE } = require("../../../../utils/constants");
-const { randomNumberGenerator, signAccessToken } = require("../../../../utils/functions");
+const { randomNumberGenerator, signAccessToken, veifyRefreshToken, signRefreshToken } = require("../../../../utils/functions");
 const {getOtpSchema,checkOtpSchema} = require("../../../validators/user/auth.schema");
 const Controller = require("../../contoller");
 class UserAuthContoller extends Controller{
@@ -35,9 +35,31 @@ class UserAuthContoller extends Controller{
             const now = Date.now();
             if(+user.otp.expiresIn < now) throw createError.Unauthorized("کد شما منقضی شده است")
             const accessToken = await signAccessToken(user._id)
+            const refreshToken = await signRefreshToken(user._id);
             return res.json({
-                data: {accessToken}
+                data: {
+                    accessToken,
+                    refreshToken
+                }
             })
+        } catch (error) {
+            next(error)
+        }
+    }
+    async refreshToken(req,res,next){
+        try {
+            const {refreshToken} = req.body;
+            const mobile = await veifyRefreshToken(refreshToken);
+            const user = await UserModel.findOne({mobile});
+            const accessToken = await signAccessToken(user._id);
+            const newRefreshToken = await signRefreshToken(user._id);
+            return res.json({
+                data:{
+                    accessToken,
+                    refreshToken : newRefreshToken
+                }
+            })
+            
         } catch (error) {
             next(error)
         }
