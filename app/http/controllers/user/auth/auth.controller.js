@@ -1,7 +1,7 @@
 const { tryWithPath } = require("@hapi/joi/lib/common");
 const createError = require("http-errors");
 const { UserModel } = require("../../../../models/user");
-const { EXPIRES_IN, USER_ROLE } = require("../../../../utils/constants");
+const { ROLES } = require("../../../../utils/constants");
 const { randomNumberGenerator, signAccessToken, veifyRefreshToken, signRefreshToken } = require("../../../../utils/functions");
 const {getOtpSchema,checkOtpSchema} = require("../../../validators/user/auth.schema");
 const Controller = require("../../contoller");
@@ -67,7 +67,7 @@ class UserAuthContoller extends Controller{
     async saveUser(mobile,code){
         let otp = {
             code,
-            expiresIn : EXPIRES_IN
+            expiresIn : (new Date().getTime() + 120000)
         }
         const result = await this.checkExistUser(mobile);
         if(result){
@@ -76,7 +76,7 @@ class UserAuthContoller extends Controller{
         return !!(await UserModel.create({
             mobile,
             otp,
-            Roles : [USER_ROLE]
+            Roles : [ROLES.USER]
         }))
         
     }
