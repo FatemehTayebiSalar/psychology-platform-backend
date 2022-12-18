@@ -35,24 +35,24 @@ const Schema = new mongoose.Schema({
     //    default:[]
     //},
 
-    joinedEvents:{
-        type : [],
-        default:[]    
+    // joinedEvents:{
+    //     type : [],
+    //     default:[]    
             
-    }
-    ,
+    // }
+    // ,
 
-    joinedPodcasts:{
-        type : [],
-        default:[]    
+    // joinedPodcasts:{
+    //     type : [],
+    //     default:[]    
             
-    },
+    // },
 
-    joinedVideos:{
-        type : [],
-        default:[]    
+    // joinedVideos:{
+    //     type : [],
+    //     default:[]    
             
-    }
+    // }
     
 });
 module.exports = {

@@ -2,7 +2,8 @@ const JWT = require("jsonwebtoken");
 const createError = require("http-errors");
 const { UserModel } = require("../models/user");
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require("./constants");
-
+const fs = require("fs");
+const path = require("path")
 function randomNumberGenerator(){
     return Math.floor((Math.random()*90000)+10000)
 
@@ -51,10 +52,16 @@ function veifyRefreshToken(token){
     })
    
 }
-
+function deleteFileInPublic(fileAddress){
+    if(fileAddress){
+        const filePath = path.join(__dirname , ".." , ".." , "public" , fileAddress)
+        if(fs.existsSync(filePath)) fs.unlinkSync(filePath)
+    }
+}
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
     signRefreshToken,
-    veifyRefreshToken
+    veifyRefreshToken,
+    deleteFileInPublic
 }
