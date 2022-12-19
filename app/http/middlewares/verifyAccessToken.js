@@ -4,7 +4,7 @@ const JWT = require("jsonwebtoken");
 const { ACCESS_TOKEN_SECRET_KEY } = require("../../utils/constants");
 
 function getToken(headers){
-    const [bearer,token] = headers?.["access-token"]?.split(" ") || [];
+    const [bearer,token] = headers?.authorization?.split(" ") || [] ;
     if(token && ["Bearer" , "bearer"].includes(bearer)) return token;
     throw createError.Unauthorized("حساب کاربری شناسایی نشد وارد حساب کاربری خود شوید");
 }
