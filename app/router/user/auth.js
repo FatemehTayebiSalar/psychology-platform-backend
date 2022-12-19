@@ -4,10 +4,45 @@ const router = require("express").Router();
 
 /**
  * @swagger
+ *  components:
+ *      schemas:
+ *          GetOTP:
+ *              type: object
+ *              required:
+ *                  -   mobile
+ *              properties:
+ *                  mobile:
+ *                      type: string
+ *                      description: The user mobile for sign-in/sign-up
+ *          CheckOTP:
+ *              type: object
+ *              required:
+ *                  -   mobile
+ *                  -   code
+ *              properties:
+ *                  mobile:
+ *                      type: string
+ *                      description: The user mobile for sign-in/sign-up
+ *                  code:
+ *                      type: integer
+ *                      description: Received code from getOTP
+ *          RefreshToken:
+ *              type: object
+ *              required:
+ *                  -   refreshToken
+ *              properties:
+ *                  refreshToken:
+ *                      type: string
+ *                      description: Enter refresh-token for getting new fresh token and refresh-token
+ */
+
+/**
+ * @swagger
  *  tags:
  *      name: User-Authentication
  *      description: user-auth section
  */
+
 /**
  * @swagger
  *  /user/get-otp:
@@ -15,12 +50,15 @@ const router = require("express").Router();
  *          summary: login user in userpanel with phone number
  *          tags: [User-Authentication]
  *          description: one time password(OTP) login
- *          parameters:
- *          -   name: mobile
- *              description: fa-IRI phone number
- *              in: formData
+ *          requestBody:
  *              required: true
- *              type: string
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetOTP'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetOTP'
  *          responses:
  *              201:
  *                  description: Success
@@ -31,7 +69,9 @@ const router = require("express").Router();
  *              500:
  *                  description: Internal Server Error
  */
+
 router.post("/get-otp", UserAuthContoller.getOtp)
+
 /**
  * @swagger
  *  /user/check-otp:
@@ -39,17 +79,15 @@ router.post("/get-otp", UserAuthContoller.getOtp)
  *          summary: check-otp value in user controller
  *          tags: [User-Authentication]
  *          description: check otp with code-mobile and expires date
- *          parameters:
- *          -   name: mobile
- *              description: fa-IRI phone number
- *              in: formData
+ *          requestBody:
  *              required: true
- *              type: string
- *          -   name: code
- *              description: SMS code received
- *              in: formData
- *              required: true
- *              type: string
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CheckOTP'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CheckOTP'
  *          responses:
  *              201:
  *                  description: Success
@@ -60,7 +98,9 @@ router.post("/get-otp", UserAuthContoller.getOtp)
  *              500:
  *                  description: Internal Server Error
  */
+
 router.post("/check-otp", UserAuthContoller.checkOtp)
+
 /**
  * @swagger
  *  /user/refresh-token:
@@ -68,16 +108,22 @@ router.post("/check-otp", UserAuthContoller.checkOtp)
  *          summary: Send refresh token 
  *          tags: [User-Authentication]
  *          description: Send refresh token to receive new token and refresh token
- *          parameters:
- *          -   in : body
- *              required : true
- *              type : string
- *              name : refreshToken
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/RefreshToken'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/RefreshToken'
  *          responses:
  *              200:
  *                  description: Success
  */
+
 router.post("/refresh-token",UserAuthContoller.refreshToken)
+
 module.exports = {
     UserAuthRoutes : router
 }
