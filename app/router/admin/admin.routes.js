@@ -13,7 +13,7 @@ const router = require("express").Router();
  *      -   name : Video(AdminPanel)
  *          description : action of admin about video section(add,delete,edit and do anything )
  */
-router.use("/podcast" ,veifyAccessToken ,PodcastAdminApiRoutes)
+router.use("/podcast" ,PodcastAdminApiRoutes)
 router.use("/video" ,VideoAdminApiRoutes)
 module.exports = {
     AdminRoutes : router

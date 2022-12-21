@@ -58,10 +58,24 @@ function deleteFileInPublic(fileAddress){
         if(fs.existsSync(filePath)) fs.unlinkSync(filePath)
     }
 }
+function deleteInvalidData(data = {} , blackListFields = []){
+    let nullishData = ["", " " , "0" , 0 , null , undefined];
+    Object.keys(data).forEach(key => {
+        if(blackListFields.includes(key)) delete data[key];
+        if(typeof data[key] == "string") data[key] = data[key].trim();
+        if(nullishData.includes(data[key])) delete data[key];
+        
+    })
+}
+function copyOfObject(object){
+    return JSON.parse(JSON.stringify(object))
+}
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
     signRefreshToken,
     veifyRefreshToken,
-    deleteFileInPublic
+    deleteFileInPublic,
+    copyOfObject,
+    deleteInvalidData
 }

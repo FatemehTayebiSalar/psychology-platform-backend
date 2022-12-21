@@ -1,16 +1,22 @@
 const mongoose = require("mongoose");
 
-const Schema = new mongoose.Schema({
+const Episodes = mongoose.Schema({
+    title: {type: String , required : true},
+    text : {type: String , required : true}
+})
+
+const Chapter = mongoose.Schema({
+    title : {type : String , required: true},
+    text : {type :String , default : ""},
+    episodes : {type: [Episodes] , default:[]}
+})
+
+const VideoSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true
     },
     coach: {
-        type: mongoose.Types.ObjectId,
-        required: true
-    },
-   //videopath
-    album: {
         type: String,
         required: true
     },
@@ -18,6 +24,11 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    coverImage:{
+        type : String,
+        required : true
+    },
+    chapter :{type : [Chapter] , default:[]},
     price: {
         type: Number,
         default: 0 
@@ -30,16 +41,13 @@ const Schema = new mongoose.Schema({
         type: [mongoose.Types.ObjectId],
         default:[]
     },
-    comments:{
-        type:[],
-        default:[]
-    },
     bookmark : {
         type:[mongoose.Types.ObjectId],
         default:[]
     }
 
 });
+VideoSchema.index({title: "text" , coach : "text" , information : "text"})
 module.exports = {
-     VideoModel : mongoose.model("video",Schema)
+     VideoModel : mongoose.model("video",VideoSchema)
 }
