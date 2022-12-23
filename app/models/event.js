@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Schema = new mongoose.Schema({
+const EventSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true
@@ -29,12 +29,13 @@ const Schema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    image:{
+    coverImage:{
         type: String, 
         required: true
     }
     
 });
+EventSchema.index({title:"text" , information : "text" , organizer :"text"})
 module.exports = {
-    EventModel : mongoose.model("event",Schema)
+    EventModel : mongoose.model("event",EventSchema)
 }
