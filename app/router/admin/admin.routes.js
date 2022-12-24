@@ -1,4 +1,5 @@
 const { veifyAccessToken } = require("../../http/middlewares/verifyAccessToken");
+const { ChapterAdminApiRoutes } = require("./chapter");
 const { EventAdminApiRoutes } = require("./event");
 const { PodcastAdminApiRoutes } = require("./podcast");
 const { VideoAdminApiRoutes } = require("./video");
@@ -15,10 +16,13 @@ const router = require("express").Router();
  *          description : action of admin about video section(add,delete,edit and do anything )
  *      -   name : Event(AdminPanel)
  *          description : action of admin about event section(add,delete,edit and do anything )
+ *      -   name : Chapter(AdminPanel)
+ *          description : action of admin about chapters(add,delete,edit and do anything )
  */
 router.use("/podcast" ,PodcastAdminApiRoutes)
 router.use("/video" ,VideoAdminApiRoutes)
 router.use("/event" ,EventAdminApiRoutes)
+router.use("/chapter" , ChapterAdminApiRoutes)
 module.exports = {
     AdminRoutes : router
 }
