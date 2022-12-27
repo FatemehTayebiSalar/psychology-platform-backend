@@ -12,14 +12,18 @@ function veifyAccessToken(req,res,next){
     try {
         const token = getToken(req.headers);
         JWT.verify(token, ACCESS_TOKEN_SECRET_KEY , async (err , payload) => {
-            if(err) throw createError.Unauthorized("وارد حساب کاربری خود شوید")
-            const {mobile} = payload || {};
-            const user =  await UserModel.findOne({mobile}, {password:0,otp:0})
-            if(!user) throw createError.Unauthorized("حساب کاربری یافت نشد");
-            req.user = user;
-            return next();
-
-        }) ;
+            try {
+                if(err) throw createError.Unauthorized("وارد حساب کاربری خود شوید")
+                const {mobile} = payload || {};
+                const user =  await UserModel.findOne({mobile}, {password:0,otp:0})
+                if(!user) throw createError.Unauthorized("حساب کاربری یافت نشد");
+                req.user = user;
+                return next();
+            } catch (error) {
+                next(error);
+            }
+        
+    });
     } catch (error) {
         next(error);
     }
