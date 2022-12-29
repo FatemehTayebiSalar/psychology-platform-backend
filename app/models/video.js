@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const Episodes = mongoose.Schema({
     title: {type: String , required : true},
-    text : {type: String , required : true}
+    text : {type: String , required : true},
+    type : {type : String , default : "Unlock"},
+    videoAddress : {type : String , required :true}
 })
 
 const Chapter = mongoose.Schema({
