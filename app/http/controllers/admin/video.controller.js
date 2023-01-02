@@ -23,8 +23,8 @@ class videoController extends Controller{
             const{title,information,price,coach} = videoDataBody;
             const video = await VideoModel.create({title,information,coverImage,coach,price})
             return res.status(HttpStatus.CREATED).json({
+                statusCode : HttpStatus.CREATED,
                 data : {
-                    statusCode : HttpStatus.CREATED,
                     message : "ویدیو با موفقیت افزوده شد"
                 }
             })
@@ -49,8 +49,8 @@ class videoController extends Controller{
             }
             
             return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK,
                 data:{
-                    statusCode : HttpStatus.OK,
                     videos
                 }
             })
@@ -64,8 +64,8 @@ class videoController extends Controller{
             const {id} = req.params;
             const video = await this.findVideoById(id);
             return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK,
                 data :{
-                    statusCode : HttpStatus.OK,
                     video
                 }
             }) 
@@ -82,8 +82,8 @@ class videoController extends Controller{
             const result = await VideoModel.deleteOne({_id : id});
             if(result.deletedCount == 0 ) throw createError.InternalServerError("حذف ویدیو انجام نشد");
             return res.status(HttpStatus.OK).json({
+                statusCode :HttpStatus.OK,
                 data:{
-                    statusCode :HttpStatus.OK,
                     message : "حذف ویدیو با موفقیت انجام شد"    
                 }
             }) 
@@ -106,8 +106,8 @@ class videoController extends Controller{
             const updateResult = await VideoModel.updateOne({_id : id} , {$set : data})
             if (updateResult.modifiedCount == 0) throw {status : HttpStatus.INTERNAL_SERVER_ERROR , message : "خطای داخلی"}
             return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK ,
                 data : {
-                    statusCode : HttpStatus.OK ,
                     message : "به روزرسانی پادکست با موفقیت انجام شد"
                 }
             })

@@ -8,10 +8,10 @@ const { deleteInvalidData } = require("../../../utils/functions");
 class chapterController extends Controller {
     async addChapter(req,res,next){
         try {
-            const{id,title,text} = req.body;
-            await AdminVideoController.findVideoById(id);
-            const saveChapterResult = await VideoModel.updateOne({_id : id} , {$push : {
-                chapter : {title , text , episodes :[]}
+            const{videoID,title,text} = req.body;
+            await AdminVideoController.findVideoById(videoID);
+            const saveChapterResult = await VideoModel.updateOne({_id : videoID} , {$push : {
+                chapters : {title , text , episodes :[]}
             }})
             if(saveChapterResult.modifiedCount == 0) throw createError.InternalServerError('فصل افزوده نشد');
             return res.status(HttpStatus.CREATED).json({
@@ -30,23 +30,40 @@ class chapterController extends Controller {
             const {videoID} = req.params;
             const chapters = await this.getChaptersOfVideo(videoID)
             return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK,
                 data:{
-                    statusCode : HttpStatus.OK,
-                    chapters
+                    video : chapters
                 }
             })
         } catch (error) {
             next(error)
         }
     }
+
+    async getChapterById(req,res,next){
+        try {
+            const {chapterID} = req.params;
+            const chapter = await this.getOneChapter(chapterID);
+            return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK,
+                data :{
+                    chapter
+                }
+            }) 
+            
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async updateChapterById(req,res,next){
         try {
             const {chapterID} = req.params;
             await this.getOneChapter(chapterID);
             const data = req.body;
             deleteInvalidData(data ,  ["_id"]);
-            const updateChapterResult = await VideoModel.updateOne({"chapter._id" : chapterID},{
-                $set : {"chapter.$" : data}
+            const updateChapterResult = await VideoModel.updateOne({"chapters._id" : chapterID},{
+                $set : {"chapters.$" : data}
             })
             if(updateChapterResult.modifiedCount == 0) throw new createError.InternalServerError("به روزرسانی فصل انجام نشد")
             return res.status(HttpStatus.OK).json({
@@ -63,9 +80,9 @@ class chapterController extends Controller {
         try {
             const {chapterID} = req.params;
             const chapter = await this.getOneChapter(chapterID);
-            const removeResult = await VideoModel.updateOne({"chapter._id" : chapterID} ,{
+            const removeResult = await VideoModel.updateOne({"chapters._id" : chapterID} ,{
                 $pull : {
-                    chapter :{
+                    chapters :{
                         _id : chapterID
                     }
                 }
@@ -82,14 +99,14 @@ class chapterController extends Controller {
         }
     }
 
-    async getChaptersOfVideo(id){
-        const chapters = await VideoModel.findOne({_id : id} , {chapter : 1 , title: 1})
+    async getChaptersOfVideo(videoID){
+        const chapters = await VideoModel.findOne({_id : videoID} , {chapters : 1 , title: 1})
         if (!chapters) throw createError.NotFound("ویدیویی با این شناسه یافت نشد")
         return chapters;
     }
 
     async getOneChapter(id){
-        const chapter = await VideoModel.findOne({"chapter._id" : id},{"chapter.$" : 1})
+        const chapter = await VideoModel.findOne({"chapters._id" : id},{"chapters.$" : 1})
         if(!chapter) throw new createError.NotFound("فصلی با این شناسه یافت نشد")
         return chapter;
     }

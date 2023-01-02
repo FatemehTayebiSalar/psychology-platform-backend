@@ -9,12 +9,12 @@ const router = require("express").Router();
  *          AddChapter:
  *              type: object
  *              required:
- *                  -   id
+ *                  -   videoID
  *                  -   title
  *              properties:
- *                  id:
+ *                  videoID:
  *                      type: string
- *                      example: 63a2421363ff2f7f78b655f6
+ *                      example: 63b308d46f4fd8878a42b85b
  *                  title:
  *                      type: string
  *                      example: chapter 1 of grief
@@ -71,6 +71,25 @@ router.put("/add" , AdminChapterController.addChapter)
  */
 
 router.get("/list/:videoID" , AdminChapterController.getListOfChapters)
+
+/**
+ * @swagger
+ *  /admin/chapter/{chapterID}:
+ *      get:
+ *          tags : [Chapter(AdminPanel)]
+ *          summary: get chapter by ID 
+ *          parameters:
+ *              -   in: path
+ *                  name: chapterID
+ *                  type: string
+ *                  description : ObjectId of chapter
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+
+ router.get("/:chapterID", AdminChapterController.getChapterById);
 
 /**
  * @swagger

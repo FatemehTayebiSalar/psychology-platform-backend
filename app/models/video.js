@@ -7,7 +7,7 @@ const Episodes = mongoose.Schema({
     videoAddress : {type : String , required :true}
 })
 
-const Chapter = mongoose.Schema({
+const Chapters = mongoose.Schema({
     title : {type : String , required: true},
     text : {type :String , default : ""},
     episodes : {type: [Episodes] , default:[]}
@@ -30,7 +30,7 @@ const VideoSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    chapter :{type : [Chapter] , default:[]},
+    chapters :{type : [Chapters] , default:[]},
     price: {
         type: Number,
         default: 0 

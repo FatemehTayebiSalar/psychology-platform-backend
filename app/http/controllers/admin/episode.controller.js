@@ -13,9 +13,9 @@ class episodeController extends Controller {
             const{title , text , type , chapterID , videoID,filename,fileUploadPath} = await createVideoEpisodeSchema.validateAsync(req.body);
             const videoAddress = path.join(fileUploadPath,filename).replace(/\\/g,"/")
             const episode = {title,text , type ,videoAddress}
-            const createEpisodeResult = await VideoModel.updateOne({_id : videoID , "chapter._id" : chapterID} , {
+            const createEpisodeResult = await VideoModel.updateOne({_id : videoID , "chapters._id" : chapterID} , {
                 $push : {
-                    "chapter.$.episodes" : episode
+                    "chapters.$.episodes" : episode
                 }
             });
             if(createEpisodeResult.modifiedCount == 0) throw {status : HttpStatus.INTERNAL_SERVER_ERROR , message : "افزودن اپیزود انجام نشد"}
@@ -48,10 +48,10 @@ class episodeController extends Controller {
                 ...data
             }
             const editEpisodeResult = await VideoModel.updateOne({
-                "chapter.episodes._id": episodeID
+                "chapters.episodes._id": episodeID
             }, {
                 $set: {
-                    "chapter.$.episodes" : newEpisode
+                    "chapters.$.episodes" : newEpisode
                 }
             })
             if (!editEpisodeResult.modifiedCount) throw new createError.InternalServerError("ویرایش اپیزود انجام نشد")
@@ -73,10 +73,10 @@ class episodeController extends Controller {
             });
             await this.findOneEpisodeById(episodeID)
             const removeEpisodeResult = await VideoModel.updateOne({
-                "chapter.episodes._id": episodeID,
+                "chapters.episodes._id": episodeID,
             }, {
                 $pull: {
-                    "chapter.$.episodes": {
+                    "chapters.$.episodes": {
                         _id: episodeID
                     }
                 }
@@ -96,11 +96,11 @@ class episodeController extends Controller {
     }
 
     async findOneEpisodeById(episodeID){
-        const video = await VideoModel.findOne({"chapter.episodes._id": episodeID}, {
-            "chapter.$": 1
+        const video = await VideoModel.findOne({"chapters.episodes._id": episodeID}, {
+            "chapters.$": 1
         })
         if(!video) throw new createError.NotFound("اپیزودی یافت نشد")
-        const episode = await video?.chapter?.[0]?.episodes?.[0]
+        const episode = await video?.chapters?.[0]?.episodes?.[0]
         if(!episode) throw new createError.NotFound("اپیزودی یافت نشد")
         return copyOfObject(episode)
     }
