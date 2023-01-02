@@ -4,6 +4,8 @@ const path = require("path");
 const { VideoModel } = require("../../../models/video");
 const {StatusCodes : HttpStatus} = require("http-status-codes");
 const { ObjectIdValidator } = require("../../validators/public.validator");
+const { deleteInvalidData, copyOfObject, deleteFileInPublic } = require("../../../utils/functions");
+const createError = require("http-errors");
 
 class episodeController extends Controller {
     async addEpisode(req,res,next){
@@ -24,34 +26,86 @@ class episodeController extends Controller {
                 }
             })
         } catch (error) {
+            deleteFileInPublic(req?.body?.videoAddress )
             next(error)
         }
     }
 
-    async removeEpisode(req,res,next){
+    async updateEpisodeById(req, res, next) {
         try {
-            const{id : episodeID} = await ObjectIdValidator.validateAsync({id : req.params.episodeID});
-            const removeEpisodeResult = await VideoModel.updateOne({
-                "chapter.episodes._id" : episodeID
+            const {episodeID} = req.params
+            const episode = await this.findOneEpisodeById(episodeID)
+            const { filename, fileUploadPath } = req.body
+            let blackListFields = ["_id"]
+            if(filename && fileUploadPath){
+                const fileAddress = path.join(fileUploadPath, filename)
+                req.body.videoAddress = fileAddress.replace(/\\/g, "/");
+            }
+            const data = req.body;
+            deleteInvalidData(data, blackListFields)
+            const newEpisode = {
+                ...episode,
+                ...data
+            }
+            const editEpisodeResult = await VideoModel.updateOne({
+                "chapter.episodes._id": episodeID
             }, {
-                $pull : {
-                    "chapter.$.episodes" : {
-                        _id : episodeID
-                    }
+                $set: {
+                    "chapter.$.episodes" : newEpisode
                 }
-            });
-            if (removeEpisodeResult.modifiedCount == 0) throw {status : HttpStatus.INTERNAL_SERVER_ERROR , message : "حذف اپیزود انجام نشد"}
+            })
+            if (!editEpisodeResult.modifiedCount) throw new createError.InternalServerError("ویرایش اپیزود انجام نشد")
             return res.status(HttpStatus.OK).json({
-                statusCode : HttpStatus.OK,
-                data : {
-                    message :"حذف اپیزود با موفقیت انجام شد"
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: "ویرایش اپیزود با موفقیت انجام شد"
                 }
             })
         } catch (error) {
-            
+            next(error)
         }
     }
+
+    async removeEpisode(req, res, next) {
+        try {
+            const {id: episodeID} = await ObjectIdValidator.validateAsync({
+                id: req.params.episodeID
+            });
+            await this.findOneEpisodeById(episodeID)
+            const removeEpisodeResult = await VideoModel.updateOne({
+                "chapter.episodes._id": episodeID,
+            }, {
+                $pull: {
+                    "chapter.$.episodes": {
+                        _id: episodeID
+                    }
+                }
+            });
+
+            if (removeEpisodeResult.modifiedCount == 0)
+                throw new createError.InternalServerError("حذف اپیزود انجام نشد")
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: "حذف اپیزود با موفقیت انجام شد"
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async findOneEpisodeById(episodeID){
+        const video = await VideoModel.findOne({"chapter.episodes._id": episodeID}, {
+            "chapter.$": 1
+        })
+        if(!video) throw new createError.NotFound("اپیزودی یافت نشد")
+        const episode = await video?.chapter?.[0]?.episodes?.[0]
+        if(!episode) throw new createError.NotFound("اپیزودی یافت نشد")
+        return copyOfObject(episode)
+    }
 }
+
 
 module.exports = {
     AdminEpisodeController : new episodeController()

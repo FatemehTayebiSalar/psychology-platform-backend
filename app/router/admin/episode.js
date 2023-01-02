@@ -39,24 +39,25 @@ const router = require ("express").Router();
  *                      type: string
  *                      description: The file of video
  *                      format: binary
- *          EditVideo:
+ *          EditEpisode:
  *              type: object
  *              properties:
  *                  title:
  *                      type: string
- *                      description: The edited title of video
- *                  coverImage:
- *                      type: file
- *                      description: The edited cover image of video
- *                  information:
+ *                      description: The edited title of episode
+ *                  text:
  *                      type: string
- *                      description: The edited information of video
- *                  coach:
+ *                      description: The edited text of episode
+ *                  type:
  *                      type: string
- *                      description: The edited Coach of video
- *                  price:
+ *                      description: The edited type of episode(Lock or Unlock)
+ *                      enum :
+ *                          -   Unlock
+ *                          -   Lock
+ *                  video:
  *                      type: string
- *                      description: The edited price of video
+ *                      description: The edited file of video
+ *                      format: binary
  */
 
 /**
@@ -79,10 +80,37 @@ const router = require ("express").Router();
  
 router.post("/add" ,uploadVideo.single("video") , AdminEpisodeController.addEpisode)
 
+
+/**
+ * @swagger
+ *  /admin/episode/update/{episodeID}:
+ *      patch:
+ *          tags : [Episode(AdminPanel)]
+ *          summary : update episode of chapter by ID
+ *          parameters:
+ *              -   in: path
+ *                  name: episodeID    
+ *                  required : true
+ *                  type: string
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/EditEpisode'
+ *          responses:
+ *              200:
+ *                  description: updated
+ *              
+ */
+
+ router.patch("/update/:episodeID",uploadVideo.single("video"), AdminEpisodeController.updateEpisodeById)
+
+
 /**
  * @swagger
  *  /admin/episode/remove/{episodeID}:
- *      delete:
+ *      patch:
  *          tags : [Episode(AdminPanel)]
  *          summary: remove episode by ID
  *          parameters:
@@ -95,7 +123,7 @@ router.post("/add" ,uploadVideo.single("video") , AdminEpisodeController.addEpis
  *                  description: success
  */
 
-router.delete("/remove/:episodeID", AdminEpisodeController.removeEpisode );
+router.patch("/remove/:episodeID", AdminEpisodeController.removeEpisode );
 
 module.exports = { 
     EpisodeAdminApiRoutes : router
