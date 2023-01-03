@@ -108,7 +108,7 @@ class videoController extends Controller{
             return res.status(HttpStatus.OK).json({
                 statusCode : HttpStatus.OK ,
                 data : {
-                    message : "به روزرسانی پادکست با موفقیت انجام شد"
+                    message : "به روزرسانی ویدیو با موفقیت انجام شد"
                 }
             })
         } catch (error) {
