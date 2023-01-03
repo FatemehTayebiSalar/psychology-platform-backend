@@ -2,20 +2,26 @@ const { createPodcastSchema } = require("../../validators/admin/podcast.schema")
 const Controller = require("../contoller");
 const path = require("path");
 const { PodcastModel } = require("../../../models/podcast");
-const { deleteFileInPublic } = require("../../../utils/functions");
+const { deleteFileInPublic, copyOfObject, deleteInvalidData } = require("../../../utils/functions");
 const createError = require("http-errors")
+const {StatusCodes : HttpStatus} = require("http-status-codes");
+const PodcastBlackList = {
+    BOOKMARK : "bookmark", 
+    DISLIKE : "dislike" , 
+    LIKE : "like"
+};
+Object.freeze(PodcastBlackList);
 class podcastController extends Controller{
     async addPodcast(req,res,next){
         try {
             const podcastDataBody = await createPodcastSchema.validateAsync(req.body);
             req.body.coverImage = (path.join(podcastDataBody.fileUploadPath, podcastDataBody.filename)).replace(/\\/g,"/");
             const coverImage = req.body.coverImage;
-            const{title,information} = podcastDataBody;
-            const narrator = req.user._id;
-            const podcast = await PodcastModel.create({title,information,coverImage,narrator})
-            return res.status(201).json({
+            const{title,information,price,narrator} = podcastDataBody;
+            const podcast = await PodcastModel.create({title,information,coverImage,narrator,price})
+            return res.status(HttpStatus.CREATED).json({
+                statusCode : HttpStatus.CREATED,
                 data : {
-                    statusCode : 201,
                     message : "پادکست با موفقیت افزوده شد"
                 }
             })
@@ -27,30 +33,13 @@ class podcastController extends Controller{
 
     async getListOfPodcasts(req,res,next){
         try {
-            const podcasts = await PodcastModel.aggregate([
-                {$match : {}},
-                {
-                    $lookup : {
-                        from : "users",
-                        foreignField: "_id",
-                        localField : "narrator",
-                        as : "narrator"
-                    }
-                },
-                {
-                    $unwind : "$narrator"
-                },
-                {
-                    $project : {
-                        "narrator.__v" : 0,
-                        "narrator.otp" : 0,
-                        "narrator.roles" : 0
-                    }
-                }
-            ])
-            return res.status(200).json({
-                data:{
-                    statusCode : 200,
+            const {search} = req.query;
+            let podcasts;
+            if(search) podcasts = await PodcastModel.find({$text : {$search : search}}).sort({_id : -1})
+            else podcasts = await EventModel.find({}).sort({_id : -1})
+            return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK,
+                data : {
                     podcasts
                 }
             })
@@ -63,9 +52,9 @@ class podcastController extends Controller{
         try {
             const {id} = req.params;
             const podcast = await this.findPodcast({_id : id});
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK,
                 data :{
-                    statusCode : 200,
                     podcast
                 }
             })            
@@ -80,9 +69,9 @@ class podcastController extends Controller{
             await this.findPodcast({_id : id});
             const result = await PodcastModel.deleteOne({_id : id});
             if(result.deletedCount == 0 ) throw createError.InternalServerError("حذف پادکست انجام نشد");
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
+                statusCode :HttpStatus.OK,
                 data:{
-                    statusCode : 200,
                     message : "حذف پادکست با موفقیت انجام شد"    
                 }
             }) 
@@ -98,20 +87,14 @@ class podcastController extends Controller{
             if(req?.body?.fileUploadPath && req?.body?.filename){
                 req.body.coverImage = (path.join(req.body.fileUploadPath, req.body.filename)).replace(/\\/g,"/");
             }
-            const data = req.body;
-            let nullishData = ["", " " , "0" , 0 , null , undefined];
-            let blackListFields = ["bookmark", "dislike" , "like" , "narrator"];
-            Object.keys(data).forEach(key => {
-                if(blackListFields.includes(key)) delete data[key];
-                if(typeof data[key] == "string") data[key] = data[key].trim();
-                if(nullishData.includes(data[key])) delete data[key];
-                
-            })
+            const data = copyOfObject(req.body);
+            let blackListFields = Object.values(PodcastBlackList);
+            deleteInvalidData(data , blackListFields);
             const updateResult = await PodcastModel.updateOne({_id : id} , {$set : data})
-            if (updateResult.modifiedCount == 0) throw createError.InternalServerError("به روزرسانی انجام نشد")
-            return res.status(200).json({
+            if (updateResult.modifiedCount == 0) throw {status : HttpStatus.INTERNAL_SERVER_ERROR , message : "خطای داخلی"}
+            return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK ,
                 data : {
-                    statusCode : 200,
                     message : "به روزرسانی پادکست با موفقیت انجام شد"
                 }
             })

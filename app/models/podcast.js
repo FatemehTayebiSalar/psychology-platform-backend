@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
-
-const AlbumSchema = new mongoose.Schema({
-    title : {type : String , required : true},
-    owner : {type : mongoose.Types.ObjectId , ref : "user" , required : true},
-    tracks : {type : [mongoose.Types.ObjectId] , ref : "podcasts" , required : true}
-})//you should create seprate album schema for both podcast an video album like category section in course
+const { ChaptersSchema } = require("./chapter");
 
 const PodcastSchema = new mongoose.Schema({
     title:{
@@ -12,17 +7,12 @@ const PodcastSchema = new mongoose.Schema({
         required: true
     },
     narrator: {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref : "user"
+        type: String,
+        required: true
     },
     coverImage: {
          type: String,
          required: true
-    },
-    album: {
-        type: AlbumSchema,
-        default : null
     },
     information: {
         type: String,
