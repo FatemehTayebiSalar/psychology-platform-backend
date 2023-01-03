@@ -7,6 +7,7 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const cors = require("cors");
 const { AllRoutes } = require("./router/router");
+require("dotenv").config()
 module.exports = class Application{
     #app = express()
     #DB_URI;
