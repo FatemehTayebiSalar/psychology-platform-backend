@@ -1,22 +1,6 @@
 const mongoose = require("mongoose");
+const { ChaptersSchema } = require("./chapter");
 
-const Episodes = mongoose.Schema({
-    title: {type: String , required : true},
-    text : {type: String , required : true},
-    type : {type : String , default : "Unlock"},
-    videoAddress : {type : String , required :true}
-},{toJSON : {
-    virtuals : true
-}})
-Episodes.virtual("videoURL").get(function(){
-    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.videoAddress}`
-})
-
-const Chapters = mongoose.Schema({
-    title : {type : String , required: true},
-    text : {type :String , default : ""},
-    episodes : {type: [Episodes] , default:[]}
-})
 
 const VideoSchema = new mongoose.Schema({
     title:{
@@ -35,7 +19,10 @@ const VideoSchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    chapters :{type : [Chapters] , default:[]},
+    chapters :{
+        type : [ChaptersSchema] ,
+        default:[]
+    },
     price: {
         type: Number,
         default: 0 
@@ -56,9 +43,11 @@ const VideoSchema = new mongoose.Schema({
 } , {toJSON : {
     virtuals :true
 }});
+
 VideoSchema.virtual("imageURL").get(function(){
     return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.coverImage}`
 })
+
 VideoSchema.index({title: "text" , coach : "text" , information : "text"})
 module.exports = {
      VideoModel : mongoose.model("video",VideoSchema)
