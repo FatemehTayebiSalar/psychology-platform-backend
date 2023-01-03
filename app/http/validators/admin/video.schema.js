@@ -16,7 +16,7 @@ const createVideoEpisodeSchema = Joi.object({
     text : Joi.string().min(3).max(30).error(createError.BadRequest("توضیحات اپیزود به صورت صحیح وارد نشده است")),
     type : Joi.string().regex(/(Lock|Unlock)/i),
     chapterID : Joi.string().regex(MongoIDPattern).error(createError.BadRequest("شناسه ی فصل صحیح نمی باشد")),
-    videoID : Joi.string().regex(MongoIDPattern).error(createError.BadRequest("شناسه ی ویدیو صحیح نمی باشد")),
+    mainFileID : Joi.string().regex(MongoIDPattern).error(createError.BadRequest("شناسه ی ویدیو صحیح نمی باشد")),
     filename:Joi.string().pattern(/(\.mp4|\.mpg|\.mov|\.avi|\.mkv)$/).error(createError.BadRequest("فرمت ویدیو ارسال شده صحیح نمی باشد")),
     fileUploadPath:Joi.allow(),
          

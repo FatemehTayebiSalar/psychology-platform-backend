@@ -10,16 +10,16 @@ const router = require ("express").Router();
  *          AddEpisode:
  *              type: object
  *              required:
- *                  -   videoID
+ *                  -   mainFileID
  *                  -   chapterID
  *                  -   title
  *                  -   text
  *                  -   type
- *                  -   video
+ *                  -   file
  *              properties:
- *                  videoID:
+ *                  mainFileID:
  *                      type: string
- *                      description: The ID of video
+ *                      description: The ID of video or podcast
  *                  chapterID:
  *                      type: string
  *                      description: The ID of chapter
@@ -35,7 +35,7 @@ const router = require ("express").Router();
  *                      enum :
  *                          -   Unlock
  *                          -   Lock
- *                  video:
+ *                  file:
  *                      type: string
  *                      description: The file of video
  *                      format: binary
@@ -54,18 +54,23 @@ const router = require ("express").Router();
  *                      enum :
  *                          -   Unlock
  *                          -   Lock
- *                  video:
+ *                  file:
  *                      type: string
- *                      description: The edited file of video
+ *                      description: The edited file of video or podcast
  *                      format: binary
  */
 
 /**
  * @swagger
- *  /admin/episode/add:
+ *  /admin/episode/add/{modelName}:
  *      post:
  *          tags : [Episode(AdminPanel)]
  *          summary : add episode
+ *          parameters:
+ *              -   in: path
+ *                  name: modelName    
+ *                  required : true
+ *                  type: string
  *          requestBody:
  *              required: true
  *              content:
@@ -78,16 +83,20 @@ const router = require ("express").Router();
  *              
  */
  
-router.post("/add" ,uploadVideo.single("video") , AdminEpisodeController.addEpisode)
+router.post("/add/:modelName" ,uploadVideo.single("file") , AdminEpisodeController.addEpisode)
 
 
 /**
  * @swagger
- *  /admin/episode/update/{episodeID}:
+ *  /admin/episode/update/{modelName}/{episodeID}:
  *      patch:
  *          tags : [Episode(AdminPanel)]
  *          summary : update episode of chapter by ID
  *          parameters:
+ *              -   in: path
+ *                  name: modelName    
+ *                  required : true
+ *                  type: string
  *              -   in: path
  *                  name: episodeID    
  *                  required : true
@@ -104,26 +113,30 @@ router.post("/add" ,uploadVideo.single("video") , AdminEpisodeController.addEpis
  *              
  */
 
- router.patch("/update/:episodeID",uploadVideo.single("video"), AdminEpisodeController.updateEpisodeById)
+ router.patch("/update/:modelName/:episodeID",uploadVideo.single("video"), AdminEpisodeController.updateEpisodeById)
 
 
 /**
  * @swagger
- *  /admin/episode/remove/{episodeID}:
+ *  /admin/episode/remove/{modelName}/{episodeID}:
  *      patch:
  *          tags : [Episode(AdminPanel)]
  *          summary: remove episode by ID
  *          parameters:
  *              -   in: path
- *                  name: episodeID
+ *                  name: modelName    
+ *                  required : true
  *                  type: string
- *                  required: true
+ *              -   in: path
+ *                  name: episodeID    
+ *                  required : true
+ *                  type: string
  *          responses:
  *              200:
  *                  description: success
  */
 
-router.patch("/remove/:episodeID", AdminEpisodeController.removeEpisode );
+router.patch("/remove/:modelName/:episodeID", AdminEpisodeController.removeEpisode );
 
 module.exports = { 
     EpisodeAdminApiRoutes : router
