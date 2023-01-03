@@ -6,7 +6,7 @@ const AlbumSchema = new mongoose.Schema({
     tracks : {type : [mongoose.Types.ObjectId] , ref : "podcasts" , required : true}
 })//you should create seprate album schema for both podcast an video album like category section in course
 
-const Schema = new mongoose.Schema({
+const PodcastSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true
@@ -48,8 +48,13 @@ const Schema = new mongoose.Schema({
         ref : "user" 
     }
     
-});
+} , {toJSON : {
+    virtuals :true
+}});
+PodcastSchema.virtual("imageURL").get(function(){
+    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.coverImage}`
+})
 
 module.exports = {
-    PodcastModel : mongoose.model("podcast",Schema)
+    PodcastModel : mongoose.model("podcast",PodcastSchema)
 }

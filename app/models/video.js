@@ -5,6 +5,11 @@ const Episodes = mongoose.Schema({
     text : {type: String , required : true},
     type : {type : String , default : "Unlock"},
     videoAddress : {type : String , required :true}
+},{toJSON : {
+    virtuals : true
+}})
+Episodes.virtual("videoURL").get(function(){
+    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.videoAddress}`
 })
 
 const Chapters = mongoose.Schema({
@@ -48,7 +53,12 @@ const VideoSchema = new mongoose.Schema({
         default:[]
     }
 
-});
+} , {toJSON : {
+    virtuals :true
+}});
+VideoSchema.virtual("imageURL").get(function(){
+    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.coverImage}`
+})
 VideoSchema.index({title: "text" , coach : "text" , information : "text"})
 module.exports = {
      VideoModel : mongoose.model("video",VideoSchema)

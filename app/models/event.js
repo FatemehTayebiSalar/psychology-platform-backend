@@ -34,7 +34,14 @@ const EventSchema = new mongoose.Schema({
         required: true
     }
     
+} , {
+    toJSON : {
+        virtuals : true
+    }
 });
+EventSchema.virtual("imageURL").get(function(){
+    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.coverImage}`
+})
 EventSchema.index({title:"text" , information : "text" , organizer :"text"})
 module.exports = {
     EventModel : mongoose.model("event",EventSchema)
