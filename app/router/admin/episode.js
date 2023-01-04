@@ -1,5 +1,5 @@
 const { AdminEpisodeController } = require("../../http/controllers/admin/episode.controller");
-const { uploadVideo } = require("../../utils/multer");
+const { uploadFile } = require("../../utils/multer");
 
 const router = require ("express").Router();
 
@@ -83,7 +83,7 @@ const router = require ("express").Router();
  *              
  */
  
-router.post("/add/:modelName" ,uploadVideo.single("file") , AdminEpisodeController.addEpisode)
+router.post("/add/:modelName" , uploadFile.single("file") , AdminEpisodeController.addEpisode)
 
 
 /**
@@ -113,7 +113,7 @@ router.post("/add/:modelName" ,uploadVideo.single("file") , AdminEpisodeControll
  *              
  */
 
- router.patch("/update/:modelName/:episodeID",uploadVideo.single("video"), AdminEpisodeController.updateEpisodeById)
+ router.patch("/update/:modelName/:episodeID",uploadFile.single("video"), AdminEpisodeController.updateEpisodeById)
 
 
 /**
