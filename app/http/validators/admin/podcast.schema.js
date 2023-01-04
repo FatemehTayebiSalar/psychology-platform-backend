@@ -23,5 +23,6 @@ const createPodcastEpisodeSchema = Joi.object({
 });
 
 module.exports = {
+    createPodcastEpisodeSchema,
     createPodcastSchema
 }
