@@ -1,9 +1,12 @@
 const JWT = require("jsonwebtoken");
 const createError = require("http-errors");
 const { UserModel } = require("../models/user");
+const { PodcastModel } = require("../models/podcast");
+const { VideoModel } = require("../models/video");
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require("./constants");
 const fs = require("fs");
-const path = require("path")
+const path = require("path");
+
 function randomNumberGenerator(){
     return Math.floor((Math.random()*90000)+10000)
 
@@ -70,6 +73,12 @@ function deleteInvalidData(data = {} , blackListFields = []){
 function copyOfObject(object){
     return JSON.parse(JSON.stringify(object))
 }
+function getModelName(modelName){
+    let model
+    if(modelName == "podcast") model = PodcastModel;
+    else if(modelName == "video") model = VideoModel;
+    return model
+}
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
@@ -77,5 +86,6 @@ module.exports = {
     veifyRefreshToken,
     deleteFileInPublic,
     copyOfObject,
-    deleteInvalidData
+    deleteInvalidData,
+    getModelName
 }

@@ -9,10 +9,10 @@ const router = require("express").Router();
  *          AddChapter:
  *              type: object
  *              required:
- *                  -   videoID
+ *                  -   mainFileID
  *                  -   title
  *              properties:
- *                  videoID:
+ *                  mainFileID:
  *                      type: string
  *                      example: 63b308d46f4fd8878a42b85b
  *                  title:
@@ -34,10 +34,15 @@ const router = require("express").Router();
 
 /**
  * @swagger
- *  /admin/chapter/add:
+ *  /admin/chapter/add/{modelName}:
  *      put:
  *          tags: [Chapter(AdminPanel)]
  *          summary: create new chapter
+ *          parameters:
+ *              -   in: path
+ *                  name: modelName    
+ *                  required : true
+ *                  type: string
  *          requestBody:
  *              required: true
  *              content:
@@ -52,33 +57,41 @@ const router = require("express").Router();
  *                  description: success                
  */
 
-router.put("/add" , AdminChapterController.addChapter)
+router.put("/add/:modelName" , AdminChapterController.addChapter)
 
 /**
  * @swagger
- *  /admin/chapter/list/{videoID}:
+ *  /admin/chapter/list/{modelName}/{mainFileID}:
  *      get:
  *          tags: [Chapter(AdminPanel)]
- *          summary: get chapters of video
+ *          summary: get chapters of video or podcast
  *          parameters:
  *              -   in: path
- *                  name: videoID
+ *                  name: modelName
  *                  type: string
- *                  required: tue      
+ *                  required: true
+ *              -   in: path
+ *                  name: mainFileID
+ *                  type: string
+ *                  required: true      
  *          responses:
  *              200:
  *                  description: success                
  */
 
-router.get("/list/:videoID" , AdminChapterController.getListOfChapters)
+router.get("/list/:modelName/:mainFileID" , AdminChapterController.getListOfChapters)
 
 /**
  * @swagger
- *  /admin/chapter/{chapterID}:
+ *  /admin/chapter/{modelName}/{chapterID}:
  *      get:
  *          tags : [Chapter(AdminPanel)]
  *          summary: get chapter by ID 
  *          parameters:
+ *              -   in: path
+ *                  name: modelName
+ *                  type: string
+ *                  required: true
  *              -   in: path
  *                  name: chapterID
  *                  type: string
@@ -89,19 +102,23 @@ router.get("/list/:videoID" , AdminChapterController.getListOfChapters)
  *                  description: success
  */
 
- router.get("/:chapterID", AdminChapterController.getChapterById);
+ router.get("/:modelName/:chapterID", AdminChapterController.getChapterById);
 
 /**
  * @swagger
- *  /admin/chapter/update/{chapterID}:
+ *  /admin/chapter/update/{modelName}/{chapterID}:
  *      patch:
  *          tags: [Chapter(AdminPanel)]
  *          summary: Update details of chapter
  *          parameters:
  *              -   in: path
+ *                  name: modelName
+ *                  type: string
+ *                  required: true
+ *              -   in: path
  *                  name: chapterID
  *                  type: string
- *                  required: tue
+ *                  required: true
  *          requestBody:
  *              required: true
  *              content:
@@ -116,25 +133,29 @@ router.get("/list/:videoID" , AdminChapterController.getListOfChapters)
  *                  description: success                
  */
 
-router.patch("/update/:chapterID" , AdminChapterController.updateChapterById)
+router.patch("/update/:modelName/:chapterID" , AdminChapterController.updateChapterById)
 
 /**
  * @swagger
- *  /admin/chapter/remove/{chapterID}:
+ *  /admin/chapter/remove/{modelName}/{chapterID}:
  *      patch:
  *          tags: [Chapter(AdminPanel)]
  *          summary: delete chapter of video by id
  *          parameters:
  *              -   in: path
+ *                  name: modelName
+ *                  type: string
+ *                  required: true
+ *              -   in: path
  *                  name: chapterID
  *                  type: string
- *                  required: tue      
+ *                  required: true      
  *          responses:
  *              200:
  *                  description: success                
  */
 
-router.patch("/remove/:chapterID" , AdminChapterController.removeChapterById)
+router.patch("/remove/:modelName/:chapterID" , AdminChapterController.removeChapterById)
 
 module.exports = {
     ChapterAdminApiRoutes : router
