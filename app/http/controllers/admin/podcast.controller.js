@@ -36,7 +36,7 @@ class podcastController extends Controller{
             const {search} = req.query;
             let podcasts;
             if(search) podcasts = await PodcastModel.find({$text : {$search : search}}).sort({_id : -1})
-            else podcasts = await EventModel.find({}).sort({_id : -1})
+            else podcasts = await PodcastModel.find({}).sort({_id : -1})
             return res.status(HttpStatus.OK).json({
                 statusCode : HttpStatus.OK,
                 data : {

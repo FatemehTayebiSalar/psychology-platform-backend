@@ -45,9 +45,12 @@ const PodcastSchema = new mongoose.Schema({
 } , {toJSON : {
     virtuals :true
 }});
+
 PodcastSchema.virtual("imageURL").get(function(){
     return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.coverImage}`
 })
+
+PodcastSchema.index({title:"text" , information : "text" , narrator :"text"})
 
 module.exports = {
     PodcastModel : mongoose.model("podcast",PodcastSchema)

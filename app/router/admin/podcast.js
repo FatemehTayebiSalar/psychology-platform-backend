@@ -14,6 +14,7 @@ const router = require("express").Router();
  *                  -   title
  *                  -   coverImage
  *                  -   information
+ *                  -   narrator
  *              properties:
  *                  title:
  *                      type: string
@@ -24,6 +25,12 @@ const router = require("express").Router();
  *                  information:
  *                      type: string
  *                      description: The information of podcast
+ *                  narrator:
+ *                      type: string
+ *                      description: Narrator of podcast
+ *                  price:
+ *                      type: string
+ *                      description: The price of podcast
  *          EditPodcast:
  *              type: object
  *              properties:
@@ -36,21 +43,13 @@ const router = require("express").Router();
  *                  information:
  *                      type: string
  *                      description: The edited information of podcast
+ *                  narrator:
+ *                      type: string
+ *                      description: Narrator of podcast
+ *                  price:
+ *                      type: string
+ *                      description: The price of podcast
  */
-
-/**
- * @swagger
- *  /admin/podcast:
- *      get:
- *          tags : [Podcast(AdminPanel)]
- *          summary : get all podcasts
- *          responses:
- *              200:
- *                  description: success - get arrey of podcasts 
- *              
- */
-
-router.get("/" , AdminPodcastController.getListOfPodcasts)
 
 /**
  * @swagger
@@ -74,6 +73,25 @@ router.post("/add",uploadFile.single("coverImage"), AdminPodcastController.addPo
 
 /**
  * @swagger
+ *  /admin/podcast:
+ *      get:
+ *          tags : [Podcast(AdminPanel)]
+ *          summary : get all podcasts
+ *          parameters :
+ *              -   in: query
+ *                  name : search
+ *                  type : text
+ *                  description : search in podcast title, information, narrator
+ *          responses:
+ *              200:
+ *                  description: success - get arrey of podcasts 
+ *              
+ */
+
+ router.get("/" , AdminPodcastController.getListOfPodcasts)
+
+/**
+ * @swagger
  *  /admin/podcast/{id}:
  *      get:
  *          tags : [Podcast(AdminPanel)]
@@ -89,24 +107,6 @@ router.post("/add",uploadFile.single("coverImage"), AdminPodcastController.addPo
  */
 
 router.get("/:id", AdminPodcastController.getPodcastById);
-
-/**
- * @swagger
- *  /admin/podcast/{id}:
- *      delete:
- *          tags : [Podcast(AdminPanel)]
- *          summary: remove podcast by ID
- *          parameters:
- *              -   in: path
- *                  name: id
- *                  type: string
- *                  required: true
- *          responses:
- *              200:
- *                  description: success
- */
-
-router.delete("/:id", AdminPodcastController.deletePodcastById);
 
 /**
  * @swagger
@@ -132,6 +132,24 @@ router.delete("/:id", AdminPodcastController.deletePodcastById);
  */
 
 router.patch("/update/:id",uploadFile.single("coverImage"), AdminPodcastController.updatePodcastById)
+
+/**
+ * @swagger
+ *  /admin/podcast/{id}:
+ *      delete:
+ *          tags : [Podcast(AdminPanel)]
+ *          summary: remove podcast by ID
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+
+ router.delete("/:id", AdminPodcastController.deletePodcastById);
 
 module.exports = {
     PodcastAdminApiRoutes : router
