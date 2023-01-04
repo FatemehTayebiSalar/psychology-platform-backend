@@ -18,6 +18,10 @@ const PodcastSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    chapters :{
+        type : [ChaptersSchema] ,
+        default:[]
+    },
     price: {
         type: Number,
         default: 0 

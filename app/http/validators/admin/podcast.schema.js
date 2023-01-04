@@ -11,7 +11,16 @@ const createPodcastSchema = Joi.object({
          
 });
 
-
+const createPodcastEpisodeSchema = Joi.object({
+    title : Joi.string().min(3).max(30).error(createError.BadRequest("عنوان اپیزود به صورت صحیح وارد نشده است")),
+    text : Joi.string().min(3).max(30).error(createError.BadRequest("توضیحات اپیزود به صورت صحیح وارد نشده است")),
+    type : Joi.string().regex(/(Lock|Unlock)/i),
+    chapterID : Joi.string().regex(MongoIDPattern).error(createError.BadRequest("شناسه ی فصل صحیح نمی باشد")),
+    mainFileID : Joi.string().regex(MongoIDPattern).error(createError.BadRequest("شناسه ی پادکست صحیح نمی باشد")),
+    filename:Joi.string().pattern(/(\.mp3|\.aac|\.flac|\.alac|\.wav)$/).error(createError.BadRequest("فرمت پادکست ارسال شده صحیح نمی باشد")),
+    fileUploadPath:Joi.allow(),
+         
+});
 
 module.exports = {
     createPodcastSchema
