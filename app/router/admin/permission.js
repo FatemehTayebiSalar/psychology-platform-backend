@@ -104,6 +104,8 @@ router.get("/" , AdminPermissionController.getListOfPermissions)
  *                  description: success
  */
 
+router.delete("/remove/:id" , AdminPermissionController.removePermission)
+
 module.exports = {
     PermissionAdminApiRoutes : router
 }
