@@ -3,6 +3,7 @@ const { ChapterAdminApiRoutes } = require("./chapter");
 const { EpisodeAdminApiRoutes } = require("./episode");
 const { EventAdminApiRoutes } = require("./event");
 const { PodcastAdminApiRoutes } = require("./podcast");
+const { UserAdminApiRoutes } = require("./user");
 const { VideoAdminApiRoutes } = require("./video");
 
 const router = require("express").Router();
@@ -11,6 +12,8 @@ const router = require("express").Router();
  *  tags:
  *      -   name : Admin-Panel
  *          description : action of admin(add,delete,edit and do anything )
+ *      -   name : Users(AdminPanel)
+ *          description : action of admin about usere of website
  *      -   name : Podcast(AdminPanel)
  *          description : action of admin about podcast section(add,delete,edit and do anything )
  *      -   name : Video(AdminPanel)
@@ -22,6 +25,7 @@ const router = require("express").Router();
  *      -   name : Episode(AdminPanel)
  *          description : action of admin about episodes(add,delete,edit and do anything )
  */
+router.use("/user" ,UserAdminApiRoutes)
 router.use("/podcast" ,PodcastAdminApiRoutes)
 router.use("/video" ,VideoAdminApiRoutes)
 router.use("/event" ,EventAdminApiRoutes)

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Schema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     email:{
         type: String,
         lowercase:true
@@ -35,26 +35,32 @@ const Schema = new mongoose.Schema({
     //    default:[]
     //},
 
-    // joinedEvents:{
-    //     type : [],
-    //     default:[]    
+    joinedEvents:{
+        type : [mongoose.Types.ObjectId],
+        ref : "event",
+        default:[]    
             
-    // }
-    // ,
+    }
+    ,
 
-    // joinedPodcasts:{
-    //     type : [],
-    //     default:[]    
+    joinedPodcasts:{
+        type : [mongoose.Types.ObjectId],
+        ref : "podcast",
+        default:[]   
             
-    // },
+    },
 
-    // joinedVideos:{
-    //     type : [],
-    //     default:[]    
+    joinedVideos:{
+        type : [mongoose.Types.ObjectId],
+        ref : "video",
+        default:[]      
             
-    // }
+    }
     
 });
+
+UserSchema.index({firstName:"text" , lastName : "text" , mobile :"text" , email : "text"})
+
 module.exports = {
-    UserModel : mongoose.model("user",Schema)
+    UserModel : mongoose.model("user",UserSchema)
 }
