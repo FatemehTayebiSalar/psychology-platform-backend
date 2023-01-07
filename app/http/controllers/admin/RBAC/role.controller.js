@@ -8,9 +8,9 @@ const { default: mongoose } = require("mongoose");
 class roleController extends Controller{
     async createNewRole(req,res,next){
         try {
-            const{title,permissions} = await createRoleSchema.validateAsync(req.body)
+            const{title,description,permissions} = await createRoleSchema.validateAsync(req.body)
             await this.findRoleWithTitle(title)
-            const role = await RoleModel.create({title , permissions})
+            const role = await RoleModel.create({title , description ,permissions})
             if(!role) throw createError.InternalServerError("نقش ایجاد نشد")
             return res.status(HttpStatus.CREATED).json({
                 statusCode : HttpStatus.CREATED,

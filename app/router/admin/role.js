@@ -11,10 +11,14 @@ const router = require("express").Router();
  *              type: object
  *              required:
  *                  -   title
+ *                  -   description
  *              properties:
  *                  title:
  *                      type: string
  *                      description: The title of role
+ *                  description:
+ *                      type: string
+ *                      description: The description of role
  *                  permissions:
  *                      type : array
  *                      description : The permission ID for role
@@ -24,6 +28,9 @@ const router = require("express").Router();
  *                  title:
  *                      type: string
  *                      description: The title of role
+ *                  description:
+ *                      type: string
+ *                      description: The description of role
  *                  permissions:
  *                      type : array
  *                      description : The permission ID for role
