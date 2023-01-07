@@ -4,6 +4,7 @@ const {StatusCodes : HttpStatus} = require("http-status-codes");
 const createError = require("http-errors");
 const { createRoleSchema } = require("../../../validators/admin/RBAC.schema");
 const { default: mongoose } = require("mongoose");
+const { copyOfObject, deleteInvalidData } = require("../../../../utils/functions");
 
 class roleController extends Controller{
     async createNewRole(req,res,next){
@@ -32,6 +33,27 @@ class roleController extends Controller{
                     roles
                 }
             }) 
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async updateRoleById(req,res,next){
+        try {
+            const {id} = req.params;
+            const role = await this.findRoleWithIdOrTitle(id);
+            const data = copyOfObject(req.body);
+            deleteInvalidData(data , ["_id"])
+            const updateRoleResult = await RoleModel.updateOne({_id : role._id} , {
+                $set : data
+            })
+            if(!updateRoleResult.modifiedCount) throw createError.InternalServerError("ویرایش نقش انجام نشد")
+            return res.status(HttpStatus.OK).json({
+                statusCode : HttpStatus.OK,
+                data : {
+                    message : "ویرایش نقش با موفقیت انجام شد"
+                }
+            })
         } catch (error) {
             next(error)
         }

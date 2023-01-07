@@ -69,6 +69,7 @@ router.post("/add" , stringToArray("permissions") ,AdminRoleController.createNew
  */
 
 router.get("/" , AdminRoleController.getListOfRoles)
+
 /**
  * @swagger
  *  /admin/role/update/{id}:
@@ -92,7 +93,7 @@ router.get("/" , AdminRoleController.getListOfRoles)
  *              
  */
 
-
+router.patch("/update/:id" , stringToArray("permissions") , AdminRoleController.updateRoleById)
 
 /**
  * @swagger

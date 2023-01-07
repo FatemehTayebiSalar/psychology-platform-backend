@@ -86,7 +86,7 @@ router.get("/" , AdminPermissionController.getListOfPermissions)
  *              
  */
 
-
+router.patch("/update/:id" , AdminPermissionController.updatePermissionById)
 
 /**
  * @swagger
