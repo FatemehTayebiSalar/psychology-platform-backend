@@ -2,7 +2,7 @@ const { VideoModel } = require("../../../models/video");
 const Controller = require("../contoller");
 const { AdminVideoController } = require("./video.controller");
 const createError = require("http-errors");
-const {StatusCodes : HttpStatus, StatusCodes} = require("http-status-codes");
+const {StatusCodes : HttpStatus} = require("http-status-codes");
 const { deleteInvalidData, getModelName, copyOfObject } = require("../../../utils/functions");
 const { AdminPodcastController } = require("./podcast.controller");
 
