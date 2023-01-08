@@ -26,9 +26,9 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
     
-    roles:{
-        type:[String],
-        default:["USER"]
+    role:{
+        type:String,
+        default:"USER"
     },
     //bills :{
     //    type : [],
