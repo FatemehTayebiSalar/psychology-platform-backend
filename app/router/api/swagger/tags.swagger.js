@@ -7,4 +7,6 @@
  *          description : Website eventpage apis
  *      -   name : VideosPage
  *          description : Website videopage apis
+ *      -   name : PodcastsPage
+ *          description : Website podcastpage apis
  */
