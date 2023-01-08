@@ -6,9 +6,9 @@ const { VideoPageApiRoutes } = require("./videoPage")
 
 const router = require("express").Router();
 
-router.use("/events" ,EventPageApiRoutes)
-router.use("/videos" ,VideoPageApiRoutes)
-router.use("/podcasts" ,PodcastPageApiRoutes)
+router.use("/events" ,checkPermission([]),EventPageApiRoutes)
+router.use("/videos" ,checkPermission([]),VideoPageApiRoutes)
+router.use("/podcasts" ,checkPermission([]),PodcastPageApiRoutes)
 
 module.exports = {
     PageRoutes : router

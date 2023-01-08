@@ -5,7 +5,7 @@ const { UserAuthRoutes } = require("./user/auth");
 const router = require("express").Router();
 router.use("/user",UserAuthRoutes)
 router.use("/admin" ,veifyAccessToken, AdminRoutes)
-router.use("/",PageRoutes)
+router.use("/" ,veifyAccessToken,PageRoutes)
 module.exports = {
     AllRoutes : router
 }
