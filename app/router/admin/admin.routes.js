@@ -1,4 +1,6 @@
+const { checkPermission } = require("../../http/middlewares/permission.guard");
 const { veifyAccessToken } = require("../../http/middlewares/verifyAccessToken");
+const { PERMISSIONS } = require("../../utils/constants");
 const { ChapterAdminApiRoutes } = require("./chapter");
 const { EpisodeAdminApiRoutes } = require("./episode");
 const { EventAdminApiRoutes } = require("./event");
@@ -29,14 +31,14 @@ const router = require("express").Router();
  *      -   name : Episode(AdminPanel)
  *          description : action of admin about episodes(add,delete,edit and do anything )
  */
-router.use("/user" ,UserAdminApiRoutes)
-router.use("/podcast" ,PodcastAdminApiRoutes)
-router.use("/video" ,VideoAdminApiRoutes)
-router.use("/event" ,EventAdminApiRoutes)
-router.use("/chapter" , ChapterAdminApiRoutes)
-router.use("/episode" , EpisodeAdminApiRoutes)
-router.use("/role" , RoleAdminApiRoutes)
-router.use("/permission" , PermissionAdminApiRoutes)
+router.use("/user" ,checkPermission([PERMISSIONS.USER]),UserAdminApiRoutes)
+router.use("/podcast",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,PodcastAdminApiRoutes)
+router.use("/video",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,VideoAdminApiRoutes)
+router.use("/event",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,EventAdminApiRoutes)
+router.use("/chapter",checkPermission([PERMISSIONS.CONTENT_MANAGER]) , ChapterAdminApiRoutes)
+router.use("/episode",checkPermission([PERMISSIONS.CONTENT_MANAGER]) , EpisodeAdminApiRoutes)
+router.use("/role",checkPermission([PERMISSIONS.ADMIN]) , RoleAdminApiRoutes)
+router.use("/permission",checkPermission([PERMISSIONS.ADMIN]) , PermissionAdminApiRoutes)
 module.exports = {
     AdminRoutes : router
 }
