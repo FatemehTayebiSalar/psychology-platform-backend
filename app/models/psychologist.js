@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Schema = new mongoose.Schema({
+const PsychologistSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true
@@ -24,9 +24,21 @@ const Schema = new mongoose.Schema({
     visitAmount: {
         type: Number,
         required: true
+    },
+    profileImage: {
+        type: String,
+        required: true
     }
     //visit-list
+}, {
+    toJSON : {
+        virtuals : true
+    }
 });
+PsychologistSchema.virtual("imageURL").get(function(){
+    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.profileImage}`
+})
+PsychologistSchema.index({name:"text" , degree : "text" , city :"text"})
 module.exports = {
-    PsychologistModel : mongoose.model("psychologist",Schema)
+    PsychologistModel : mongoose.model("psychologist",PsychologistSchema)
 }

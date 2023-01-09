@@ -7,6 +7,8 @@
  *          description : RoleBaseAccessControll System(create and manage role and permissions)
  *      -   name : Users(AdminPanel)
  *          description : action of admin about usere of website
+ *      -   name : Psychologists(AdminPanel)
+ *          description : action of admin about Psychologists of website
  *      -   name : Podcast(AdminPanel)
  *          description : action of admin about podcast section(add,delete,edit and do anything )
  *      -   name : Video(AdminPanel)
