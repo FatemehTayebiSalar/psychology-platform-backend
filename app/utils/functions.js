@@ -79,6 +79,13 @@ function getModelName(modelName){
     else if(modelName == "video") model = VideoModel;
     return model
 }
+function listOfImagesFromRequest(files,fileUploadPath){
+    if (files?.length > 0) {
+        return ((files.map(file => path.join(fileUploadPath, file.filename))).map(item => item.replace(/\\/g, "/")))
+    } else {
+        return []
+    }
+}
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
@@ -87,5 +94,6 @@ module.exports = {
     deleteFileInPublic,
     copyOfObject,
     deleteInvalidData,
-    getModelName
+    getModelName,
+    listOfImagesFromRequest
 }
