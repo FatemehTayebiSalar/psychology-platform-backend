@@ -6,41 +6,36 @@ const applicationSchema = new mongoose.Schema({
         ref : "user",
         required :true
     },
+    name:{
+        type: String,
+        required: true
+    },
+    degree: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
+    visitAmount: {
+        type: Number,
+        required: true
+    },
     degreeImage : {type :String , required :true},
     cvFile : {type : String , required :true},
-    information : {
-        name:{
-            type: String,
-            required: true
-        },
-        degree: {
-            type: String,
-            required: true
-        },
-        city: {
-            type: String,
-            required: true
-        },
-        address: {
-            type: String,
-            required: true
-        },
-        phoneNumber: {
-            type: String,
-            required: true
-        },
-        visitAmount: {
-            type: Number,
-            required: true
-        },
-        profileImage: {
-            type: String,
-            required: true
-        }
-    },
+    profileImage: {type: String,required: true},
     response : {
         type : String,
-        default : ""
+        default : "pending"
     }
 },{toJSON : {
     virtuals :true
@@ -55,7 +50,7 @@ applicationSchema.virtual("cvFileURL").get(function(){
 })
 
 applicationSchema.virtual("profileImageURL").get(function(){
-    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.information.profileImage}`
+    return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.profileImage}`
 })
 
 applicationSchema.index({response:"text" , degree : "text" , name : "text"})
