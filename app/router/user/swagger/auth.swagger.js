@@ -35,7 +35,7 @@
 
 /**
  * @swagger
- *  /user/get-otp:
+ *  /user/auth/get-otp:
  *      post:
  *          summary: login user in userpanel with phone number
  *          tags: [Authentication(UserPanel)]
@@ -62,7 +62,7 @@
 
 /**
  * @swagger
- *  /user/check-otp:
+ *  /user/auth/check-otp:
  *      post:
  *          summary: check-otp value in user controller
  *          tags: [Authentication(UserPanel)]
@@ -89,7 +89,7 @@
 
 /**
  * @swagger
- *  /user/refresh-token:
+ *  /user/auth/refresh-token:
  *      post:
  *          summary: Send refresh token 
  *          tags: [Authentication(UserPanel)]
