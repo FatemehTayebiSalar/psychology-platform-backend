@@ -39,7 +39,7 @@ const applicationSchema = new mongoose.Schema({
     }
 },{toJSON : {
     virtuals :true
-}})
+}});
 
 applicationSchema.virtual("degreeImageURL").get(function(){
     return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.degreeImage}`

@@ -7,6 +7,7 @@ const { EventAdminApiRoutes } = require("./event");
 const { PermissionAdminApiRoutes } = require("./permission");
 const { PodcastAdminApiRoutes } = require("./podcast");
 const { PsychologistAdminApiRoutes } = require("./psychologist");
+const { ApplicationAdminApiRoutes } = require("./application");
 const { RoleAdminApiRoutes } = require("./role");
 const { UserAdminApiRoutes } = require("./user");
 const { VideoAdminApiRoutes } = require("./video");
@@ -15,6 +16,7 @@ const router = require("express").Router();
 
 router.use("/user" ,checkPermission([PERMISSIONS.USER]),UserAdminApiRoutes)
 router.use("/psychologist",checkPermission([PERMISSIONS.ADMIN]) , PsychologistAdminApiRoutes)
+router.use("/application",checkPermission([PERMISSIONS.ADMIN]) , ApplicationAdminApiRoutes)
 router.use("/podcast",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,PodcastAdminApiRoutes)
 router.use("/video",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,VideoAdminApiRoutes)
 router.use("/event",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,EventAdminApiRoutes)

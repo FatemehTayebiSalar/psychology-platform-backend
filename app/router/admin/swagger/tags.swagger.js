@@ -9,6 +9,8 @@
  *          description : action of admin about usere of website
  *      -   name : Psychologists(AdminPanel)
  *          description : action of admin about Psychologists of website
+ *      -   name : Application(AdminPanel)
+ *          description : action of admin about applications from users
  *      -   name : Podcast(AdminPanel)
  *          description : action of admin about podcast section(add,delete,edit and do anything )
  *      -   name : Video(AdminPanel)
