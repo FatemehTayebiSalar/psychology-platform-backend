@@ -5,6 +5,7 @@
  *          AddPsychologist:
  *              type: object
  *              required:
+ *                  -   userID
  *                  -   name
  *                  -   degree
  *                  -   city
@@ -13,6 +14,9 @@
  *                  -   visitAmount
  *                  -   profileImage
  *              properties:
+ *                  userID:
+ *                      type: string
+ *                      description: The userID of user
  *                  name:
  *                      type: string
  *                      description: The name of psychologist
@@ -37,6 +41,9 @@
  *          EditPsychologist:
  *              type: object
  *              properties:
+ *                  userID:
+ *                      type: string
+ *                      description: The userID of user
  *                  name:
  *                      type: string
  *                      description: The edirted name of psychologist
@@ -57,7 +64,7 @@
  *                      description: The edirted visit amount of psychologist
  *                  profileImage:
  *                      type: file
- *                      description: The edirted profile image of psychologist
+ *                      description: The edirted profile image of psychologist    
  */
 
 /** 
@@ -150,3 +157,4 @@
  *              200:
  *                  description: success
  */
+

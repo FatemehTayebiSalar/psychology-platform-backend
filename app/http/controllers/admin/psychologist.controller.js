@@ -8,14 +8,15 @@ const { createPsychologistSchema } = require("../../validators/admin/psychologis
 const { PsychologistModel } = require("../../../models/psychologist");
 
 
+
 class psychologistController extends Controller{
     async addPsychologist(req,res,next){
         try {
             const psychologistDataBody = await createPsychologistSchema.validateAsync(req.body);
             req.body.profileImage = (path.join(psychologistDataBody.fileUploadPath, psychologistDataBody.filename)).replace(/\\/g,"/");
             const profileImage = req.body.profileImage;
-            const{name,degree,city,address,phoneNumber,visitAmount} = psychologistDataBody;
-            const psychologist = await PsychologistModel.create({name,degree,city,address,phoneNumber,visitAmount,profileImage})
+            const{userID,name,degree,city,address,phoneNumber,visitAmount} = psychologistDataBody;
+            const psychologist = await PsychologistModel.create({userID,name,degree,city,address,phoneNumber,visitAmount,profileImage})
             return res.status(HttpStatus.CREATED).json({
                 statusCode : HttpStatus.CREATED,
                 data : {
@@ -95,7 +96,7 @@ class psychologistController extends Controller{
                 req.body.ptofileImage = (path.join(req.body.fileUploadPath, req.body.filename)).replace(/\\/g,"/");
             }
             const data = copyOfObject(req.body);
-            deleteInvalidData(data , []);
+            deleteInvalidData(data , ["_id"]);
             const updateResult = await PsychologistModel.updateOne({_id : id} , {$set : data})
             if (updateResult.modifiedCount == 0) throw {status : HttpStatus.INTERNAL_SERVER_ERROR , message : "خطای داخلی"}
             return res.status(HttpStatus.OK).json({

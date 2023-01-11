@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const PsychologistSchema = new mongoose.Schema({
+    userID:{
+        type: mongoose.Types.ObjectId,
+        ref : "user",
+        required :true
+    },
     name:{
         type: String,
         required: true

@@ -1,6 +1,8 @@
 const Joi = require("@hapi/joi");
 const createError = require("http-errors");
+const { MongoIDPattern } = require("../../../utils/constants");
 const createPsychologistSchema = Joi.object({
+    userID : Joi.string().regex(MongoIDPattern).error(createError.BadRequest("شناسه ی کاربر صحیح نمی باشد")),
     name : Joi.string().min(3).max(30).error(createError.BadRequest("نام روانشناس به صورت صحیح وارد نشده است")),
     degree : Joi.string().min(10).max(100).error(createError.BadRequest("مدرک روانشناس به صورت صحیح وارد نشده است")),
     city : Joi.string().min(3).max(30).error(createError.BadRequest("نام  شهر به صورت صحیح وارد نشده است")),
@@ -12,6 +14,7 @@ const createPsychologistSchema = Joi.object({
     
          
 });
+
 
 module.exports = {
     createPsychologistSchema
