@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const TicketSchema = new mongoose.Schema({
+    firstName : {type : String , required : true},
+    lastName : {type : String , required : true},
+    mobile : {type : String , required : true}
+})
+
 const EventSchema = new mongoose.Schema({
     title:{
         type: String,
@@ -32,6 +38,10 @@ const EventSchema = new mongoose.Schema({
     coverImage:{
         type: String, 
         required: true
+    },
+    tickets:{
+        type: [TicketSchema],
+        default : []
     }
     
 } , {
