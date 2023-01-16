@@ -49,7 +49,7 @@ class psychologistsPageController extends Controller{
 
     async findPsychologistById(psychologistID){
         const {id} = await ObjectIdValidator.validateAsync({id : psychologistID});
-        const psychologist = await PsychologistModel.findById(id , {userID : 0 , profileImage : 0 , appointmentsList : 0 , __v : 0});
+        const psychologist = await PsychologistModel.findById(id , {userID : 0  , appointmentsList : 0 , __v : 0});
         if(!psychologist) throw createError.NotFound("روانشناسی یافت نشد");
         return psychologist;
     }
