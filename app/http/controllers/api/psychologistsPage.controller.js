@@ -17,7 +17,7 @@ class psychologistsPageController extends Controller{
                    }
                },{userID : 0 , profileImage : 0 , __v : 0 , city : 0 , address : 0 ,phoneNumber : 0 ,visitAmount : 0 ,schedules : 0 ,appointmentsList : 0 })
             }else{
-                psychologists = await PsychologistModel.find({},{userID : 0 , profileImage : 0 , __v : 0 , city : 0 , address : 0 ,phoneNumber : 0 ,visitAmount : 0 ,schedules : 0 ,appointmentsList : 0})
+                psychologists = await PsychologistModel.find({},{userID : 0 , __v : 0 , city : 0 , address : 0 ,phoneNumber : 0 ,visitAmount : 0 ,schedules : 0 ,appointmentsList : 0})
             }
             
             return res.status(HttpStatus.OK).json({
