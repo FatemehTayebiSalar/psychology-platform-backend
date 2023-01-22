@@ -4,6 +4,7 @@ const { UserModel } = require("../../../../models/user");
 const { ROLES } = require("../../../../utils/constants");
 const { randomNumberGenerator, signAccessToken, veifyRefreshToken, signRefreshToken } = require("../../../../utils/functions");
 const {getOtpSchema,checkOtpSchema} = require("../../../validators/user/auth.schema");
+const {StatusCodes : HttpStatus} = require("http-status-codes");
 const Controller = require("../../contoller");
 class UserAuthContoller extends Controller{
     async getOtp(req,res,next){
@@ -12,10 +13,10 @@ class UserAuthContoller extends Controller{
             const {mobile} = req.body;
             const code = randomNumberGenerator();
             const result = await this.saveUser(mobile,code);
-            if(!result) throw createError.U("ورود شما انجام نشد")
-            return res.status(200).send({
+            if(!result) throw createError.Unauthorized("ورود شما انجام نشد")
+            return res.status(HttpStatus.OK).send({
+                statusCode : HttpStatus.OK,
                 data:{
-                    statusCode : 200,
                     message : "کد اعتبارسنجی با موفقیت برای شما ارسال شد",
                     code,
                     mobile
@@ -36,7 +37,8 @@ class UserAuthContoller extends Controller{
             if(+user.otp.expiresIn < now) throw createError.Unauthorized("کد شما منقضی شده است")
             const accessToken = await signAccessToken(user._id)
             const refreshToken = await signRefreshToken(user._id);
-            return res.json({
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
                 data: {
                     accessToken,
                     refreshToken
