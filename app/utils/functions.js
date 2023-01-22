@@ -86,6 +86,31 @@ function listOfImagesFromRequest(files,fileUploadPath){
         return []
     }
 }
+function createTimeSlots(sHour,sMinute,eHour , eMinute){
+    const totalStartMinute = (parseInt(sHour) * 60) + parseInt(sMinute);
+    const totalEndMinute = (parseInt(eHour) * 60) + parseInt(eMinute);
+    const totalTime = totalEndMinute - totalStartMinute
+    const slotNumber = Math.floor(totalTime/45)
+    const slotTimes = []
+    for(let i=0 ; i<slotNumber ; i++){
+        let totalResultMinute = totalStartMinute + i*45 
+        let resultHour = Math.floor(totalResultMinute/60)
+        let resultMinute = totalResultMinute%60
+        if(resultMinute == 0) slotTimes.push(`${resultHour}:${resultMinute}0`)
+        else slotTimes.push(`${resultHour}:${resultMinute}`)
+    }
+    return slotTimes
+} 
+function getRepeatIndex(repeatIndex){
+    let index = 0
+    if(repeatIndex == "هر روز") index = 1
+    else if(repeatIndex == "هر هفته") index = 7
+    return index
+}
+
+
+
+
 module.exports = {
     randomNumberGenerator,
     signAccessToken,
@@ -95,5 +120,7 @@ module.exports = {
     copyOfObject,
     deleteInvalidData,
     getModelName,
-    listOfImagesFromRequest
+    listOfImagesFromRequest,
+    createTimeSlots,
+    getRepeatIndex
 }
