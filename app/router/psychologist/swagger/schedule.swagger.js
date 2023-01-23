@@ -98,3 +98,31 @@
 *                   description: added 
 *              
 */
+
+/**
+ * @swagger
+ *  /psychologist/schedule:
+ *      get:
+ *          tags : [Psychologist-Panel]
+ *          summary : get schedules
+ *          responses:
+ *              200:
+ *                  description: success - get arrey of schedules
+ *              
+ */
+
+/**
+ * @swagger
+ *  /psychologist/schedule/remove/{scheduleID}:
+ *      patch:
+ *          tags: [Psychologist-Panel]
+ *          summary: delete timeSlot of schedules by id
+ *          parameters:
+ *              -   in: path
+ *                  name: scheduleID
+ *                  type: string
+ *                  required: true    
+ *          responses:
+ *              200:
+ *                  description: success                
+ */

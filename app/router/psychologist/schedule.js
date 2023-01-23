@@ -3,11 +3,9 @@ const { PsychologistScheduleContoller } = require("../../http/controllers/psycho
 const router = require("express").Router();
 
 
-router.patch("/add" , PsychologistScheduleContoller.addSchedule)
-// router.get("/" , AdminPsychologistController.getListOfPsychologists);
-// router.get("/:id", AdminPsychologistController.getPsychologistById);
-// router.patch("/update/:id",uploadPicture.single("profileImage"), AdminPsychologistController.updatePsychologistById)
-// router.delete("/remove/:id", AdminPsychologistController.deletePsychologistById);
+router.patch("/add"  ,PsychologistScheduleContoller.addSchedule)
+router.get("/" , PsychologistScheduleContoller.getschedules);
+router.patch("/remove/:scheduleID" , PsychologistScheduleContoller.removeScheduleById)
 
 module.exports = {
     PsychologistScheduleApiRoutes : router
