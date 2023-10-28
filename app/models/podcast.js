@@ -24,23 +24,9 @@ const PodcastSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        default: 0 
+        required: true
     },
-    like:{
-        type: [mongoose.Types.ObjectId],
-        default:[],
-        ref : "user"
-    },
-    dislike:{
-        type: [mongoose.Types.ObjectId],
-        default:[],
-        ref : "user"
-    },
-    bookmark : {
-        type:[mongoose.Types.ObjectId],
-        default:[],
-        ref : "user" 
-    }
+
     
 } , {toJSON : {
     virtuals :true

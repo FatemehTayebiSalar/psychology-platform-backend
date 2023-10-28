@@ -38,6 +38,11 @@ const VideoSchema = new mongoose.Schema({
     bookmark : {
         type:[mongoose.Types.ObjectId],
         default:[]
+    },
+    price : {
+        type: Number,
+        required : true,
+        default : 0
     }
 
 } , {toJSON : {

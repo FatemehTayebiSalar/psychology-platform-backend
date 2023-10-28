@@ -15,7 +15,8 @@ class applyContoller extends Controller{
             const cvFile = files[1]
             const profileImage = files[2]
             const{name,degree,city,address,phoneNumber,visitAmount} = applicationDataBody;
-            const application = await ApplicationModel.create({applicant,name,degree,city,address,phoneNumber,visitAmount,degreeImage,cvFile,profileImage})
+            const application = await ApplicationModel.create({applicant,name,degree,city,address,
+                phoneNumber,visitAmount,degreeImage,cvFile,profileImage})
             return res.status(HttpStatus.CREATED).json({
                 statusCode : HttpStatus.CREATED,
                 data : {

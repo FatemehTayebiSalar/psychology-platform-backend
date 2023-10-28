@@ -8,6 +8,7 @@ const { deleteInvalidData, copyOfObject, deleteFileInPublic } = require("../../.
 const createError = require("http-errors");
 const { PodcastModel } = require("../../../models/podcast");
 const { createPodcastEpisodeSchema } = require("../../validators/admin/podcast.schema");
+const { triggerAsyncId } = require("async_hooks");
 
 class episodeController extends Controller {
     async addEpisode(req,res,next){
@@ -15,6 +16,7 @@ class episodeController extends Controller {
             const {modelName} = req.params
             const model = await this.getModelName(modelName)
             const validator = await this.getValidator(modelName)
+            
             const{title , text , type , chapterID , mainFileID,filename,fileUploadPath} = await validator.validateAsync(req.body);
             const fileAddress = path.join(fileUploadPath,filename).replace(/\\/g,"/")
             const episode = {title,text , type ,fileAddress}
@@ -104,9 +106,7 @@ class episodeController extends Controller {
     }
 
     async findOneEpisodeById(modelName , episodeID){
-        console.log(modelName)
         const model = await this.getModelName(modelName)
-        console.log(model)
         const result = await model.findOne({"chapters.episodes._id": episodeID}, {
             "chapters.$": 1
         })
@@ -115,6 +115,7 @@ class episodeController extends Controller {
         if(!episode) throw new createError.NotFound("اپیزودی یافت نشد")
         return copyOfObject(episode)
     }
+
 
 
     async getModelName(modelName){

@@ -11,6 +11,7 @@
  *                  -   text
  *                  -   type
  *                  -   file
+ *                  -   image
  *              properties:
  *                  mainFileID:
  *                      type: string
@@ -32,7 +33,7 @@
  *                          -   Lock
  *                  file:
  *                      type: string
- *                      description: The file of video
+ *                      description: The file of video or podcast
  *                      format: binary
  *          EditEpisode:
  *              type: object

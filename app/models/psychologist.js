@@ -28,6 +28,16 @@ const PsychologistSchema = new mongoose.Schema({
     degree: {
         type: String,
         required: true
+    }
+    ,
+    schedules : {
+        type : [timeSlotSchema],
+        required : true
+    },
+    appointmentsList : {
+        type: [mongoose.Types.ObjectId],
+        ref : "appointment",
+        required :true
     },
     city: {
         type: String,
@@ -48,15 +58,6 @@ const PsychologistSchema = new mongoose.Schema({
     profileImage: {
         type: String,
         required: true
-    },
-    schedules : {
-        type : [timeSlotSchema],
-        required : true
-    },
-    appointmentsList : {
-        type: [mongoose.Types.ObjectId],
-        ref : "appointment",
-        required :true
     }
 }, {
     toJSON : {

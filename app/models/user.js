@@ -28,10 +28,7 @@ const UserSchema = new mongoose.Schema({
         type:String,
         default:"USER"
     },
-    //bills :{
-    //    type : [],
-    //    default:[]
-    //},
+
 
     joinedEvents:{
         type : [mongoose.Types.ObjectId],

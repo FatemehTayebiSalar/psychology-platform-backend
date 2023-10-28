@@ -16,7 +16,6 @@ const router = require("express").Router();
 
 router.use("/user" ,checkPermission([PERMISSIONS.USER]),UserAdminApiRoutes)
 router.use("/psychologist",checkPermission([PERMISSIONS.ADMIN]) , PsychologistAdminApiRoutes)
-router.use("/application",checkPermission([PERMISSIONS.ADMIN]) , ApplicationAdminApiRoutes)
 router.use("/podcast",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,PodcastAdminApiRoutes)
 router.use("/video",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,VideoAdminApiRoutes)
 router.use("/event",checkPermission([PERMISSIONS.CONTENT_MANAGER]) ,EventAdminApiRoutes)
@@ -24,6 +23,9 @@ router.use("/chapter",checkPermission([PERMISSIONS.CONTENT_MANAGER]) , ChapterAd
 router.use("/episode",checkPermission([PERMISSIONS.CONTENT_MANAGER]) , EpisodeAdminApiRoutes)
 router.use("/role",checkPermission([PERMISSIONS.ADMIN]) , RoleAdminApiRoutes)
 router.use("/permission",checkPermission([PERMISSIONS.ADMIN]) , PermissionAdminApiRoutes)
+
+router.use("/application",checkPermission([PERMISSIONS.ADMIN]) , ApplicationAdminApiRoutes)
+
 module.exports = {
     AdminRoutes : router
 }

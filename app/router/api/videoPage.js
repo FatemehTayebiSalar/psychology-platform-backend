@@ -1,3 +1,4 @@
+const { AdminEpisodeController } = require("../../http/controllers/admin/episode.controller");
 const { AdminVideoController } = require("../../http/controllers/admin/video.controller");
 
 
